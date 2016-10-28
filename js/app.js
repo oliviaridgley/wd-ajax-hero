@@ -12,17 +12,17 @@
       var $title = $('<h6 class="card-title truncate">');
       $title.attr({
         'data-position': 'top',
-        'data-tooltip': movie.Title
+        'data-tooltip': movie.title
       });
 
       $title.tooltip({ delay: 50, });
-      $title.text(movie.Title);
+      $title.text(movie.title);
 
       var $poster = $('<img class="poster">');
 
       $poster.attr({
-        src: movie.Poster,
-        alt: `${movie.Poster} Poster`
+        src: movie.poster,
+        alt: `${movie.poster} Poster`
       });
 
       $content.append($title, $poster);
@@ -89,8 +89,12 @@ $xhr.done(function(data) {
     } else {
 
       for (let i = 0; i < data.Search.length; i++) {
-        console.log(data.Search[i].Title);
-        
+        var newObj ={};
+         newObj.id = data.Search[i].imdbID;
+         newObj.poster = data.Search[i].Poster;
+         newObj.title = data.Search[i].Title;
+         newObj.year = data.Search[i].Year;
+        movies.push(newObj);
       }
 
     }
@@ -99,7 +103,9 @@ $xhr.done(function(data) {
 $xhr.fail(function(err) {
     console.log(err);
 });
+
 }
+renderMovies();
 $("#search").val('');
 }
 
