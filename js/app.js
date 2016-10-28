@@ -56,5 +56,60 @@
     }
   };
 
+  //- Listen for submissions on the search form. Remember to prevent the default action.
+//- Validate the user input is not blank.
+//- Clear the previous search results.
+//- Send an HTTP request to the [OMDB API](http://omdbapi.com/) search endpoint.
+//- Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.
+//Render the `movies` array to the page by calling the `renderMovies()` function with no arguments.
+
   // ADD YOUR CODE HERE
+
+// ================ Declare Values ==================//
+
+//var searchInput = $("#search").val();
+var submitButton = $("#enterButton");
+
+// ================ Listen for Submissions on Search ==================//
+
+
+
+function submitSearch(event){
+  event.preventDefault();
+
+if($("#search").val() === ""){
+  Materialize.toast('Please enter a movie to search', 4000);
+  console.log("test")
+} else {
+  console.log("I got to the else");
+var $xhr = $.getJSON('http://www.omdbapi.com/?t=' + $("#search").val() + '&y=&plot=short&r=json');
+
+$xhr.done(function(data) {
+    if ($xhr.status !== 200) {
+        return;
+    }
+
+    console.log(data);
+});
+
+$xhr.fail(function(err) {
+    console.log(err);
+});
+}
+
+}
+
+$(submitButton).on('click', submitSearch);
+
+
+
+
+
+
+
+
+
+
+
+
 })();
