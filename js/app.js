@@ -5,26 +5,24 @@
 
   var renderMovies = function() {
     $('#listings').empty();
-
     for (var movie of movies) {
       var $col = $('<div class="col s6">');
       var $card = $('<div class="card hoverable">');
       var $content = $('<div class="card-content center">');
       var $title = $('<h6 class="card-title truncate">');
-
       $title.attr({
         'data-position': 'top',
-        'data-tooltip': movie.title
+        'data-tooltip': movie.Title
       });
 
       $title.tooltip({ delay: 50, });
-      $title.text(movie.title);
+      $title.text(movie.Title);
 
       var $poster = $('<img class="poster">');
 
       $poster.attr({
-        src: movie.poster,
-        alt: `${movie.poster} Poster`
+        src: movie.Poster,
+        alt: `${movie.Poster} Poster`
       });
 
       $content.append($title, $poster);
@@ -41,9 +39,9 @@
 
       var $modal = $(`<div id="${movie.id}" class="modal">`);
       var $modalContent = $('<div class="modal-content">');
-      var $modalHeader = $('<h4>').text(movie.title);
-      var $movieYear = $('<h6>').text(`Released in ${movie.year}`);
-      var $modalText = $('<p>').text(movie.plot);
+      var $modalHeader = $('<h4>').text(movie.Title);
+      var $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
+      var $modalText = $('<p>').text(movie.Plot);
 
       $modalContent.append($modalHeader, $movieYear, $modalText);
       $modal.append($modalContent);
@@ -67,8 +65,9 @@
 
 // ================ Declare Values ==================//
 
-//var searchInput = $("#search").val();
+var searchInput = '';
 var submitButton = $("#enterButton");
+
 
 // ================ Listen for Submissions on Search ==================//
 
@@ -79,24 +78,29 @@ function submitSearch(event){
 
 if($("#search").val() === ""){
   Materialize.toast('Please enter a movie to search', 4000);
-  console.log("test")
 } else {
-  console.log("I got to the else");
-var $xhr = $.getJSON('http://www.omdbapi.com/?t=' + $("#search").val() + '&y=&plot=short&r=json');
+  searchInput = $("#search").val();
+  //console.log("I got to the else");
+var $xhr = $.getJSON('http://www.omdbapi.com/?s=' + searchInput + '&y=&plot=short&r=json');
 
 $xhr.done(function(data) {
     if ($xhr.status !== 200) {
         return;
-    }
+    } else {
 
-    console.log(data);
+      for (let i = 0; i < data.Search.length; i++) {
+        console.log(data.Search[i].Title);
+        
+      }
+
+    }
 });
 
 $xhr.fail(function(err) {
     console.log(err);
 });
 }
-
+$("#search").val('');
 }
 
 $(submitButton).on('click', submitSearch);
